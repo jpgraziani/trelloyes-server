@@ -13,3 +13,27 @@
 {"message":"Card with id 3e8d065d-fa2f-4f88-be06-0655491766d4 not found.","level":"error"}
 {"message":"Unauthorized request to path: /card","level":"error"}
 {"message":"Card with id 3e8d065d-fa2f-4f88-be06-0655491766d4 not found.","level":"error"}
+{"message":"Unauthorized request to path: /","level":"error"}
+{"message":"Unauthorized request to path: /favicon.ico","level":"error"}
+{"message":"Title is required","level":"error"}
+{"message":"Title is required","level":"error"}
+{"message":"Title is required","level":"error"}
+{"message":"Title is required","level":"error"}
+{"message":"Title is required","level":"error"}
+{"message":"Title is required","level":"error"}
+{"message":"Title is required","level":"error"}
+{"message":"Title is required","level":"error"}
+{"message":"Title is required","level":"error"}
+{"message":"Unauthorized request to path: /card/","level":"error"}
+{"message":"Unauthorized request to path: /card/","level":"error"}
+{"message":"Unauthorized request to path: /card/","level":"error"}
+{"message":"Card with id 5b5ee947-499b-4758-94d2-0b96775ba066 created","level":"info"}
+{"message":"List with id 1c97a8c2-b298-451f-b5c4-55edd343f06d created","level":"info"}
+{"message":"Unauthorized request to path: /","level":"error"}
+{"message":"Unauthorized request to path: /favicon.ico","level":"error"}
+{"message":"Unauthorized request to path: /","level":"error"}
+{"message":"Unauthorized request to path: /favicon.ico","level":"error"}
+{"message":"List with id 6fee5335-ff47-4b74-871d-b5b0785780e4 created","level":"info"}
+{"message":"List with id 2d811571-3f2a-4f88-9b25-5034cf2415d6 created","level":"info"}
+{"message":"List with id 7c4e3f5e-1d53-486b-85bf-50c0292c332f created","level":"info"}
+{"message":"List with id c2c19b17-fc2f-4faa-908d-16a59d189bd4 created","level":"info"}

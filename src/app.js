@@ -4,53 +4,14 @@ const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
-const winston = require('winston')
-const { v4: uuid } = require('uuid')
+const cardRouter = require('./card/card-router')
+const listRouter = require('./list/list-router');
+
 
 const app = express()
 
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  transports: [
-    new winston.transports.File({ filename: 'info.log'})
-  ]
-});
-
-if (NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple()
-  }))
-}
-
-const cards = [
-  {
-    id: 1,
-    title: 'Task One',
-    content: 'This is card one'
-  },
-  {
-    id: 2,
-    title: 'Task Two',
-    content: 'This is card two'
-  }
-];
-const lists = [
-  {
-    id: 1,
-    header: 'List One',
-    cardIds: [1]
-  },
-  {
-    id: 2,
-    header: 'List Two',
-    cardIds: [1,2]
-  }
-];
-
-const morganOption = (NODE_ENV === 'production')
-  ? 'tiny'
-  : 'common';
+const morganOption = 
+  (NODE_ENV === 'production') ? 'tiny' : 'common';
 
 app.use(morgan(morganOption))
 app.use(cors())
@@ -69,101 +30,23 @@ app.use(function validateBearerToken(req, res, next) {
   next()
 });
 
-//---------------------------------------------------
-// GET http request
-//---------------------------------------------------
-// gets all
-app.get('/card', (req, res) => {
+app.use(cardRouter);
+app.use(listRouter);
+
+app.get('/', (req, res) => {
   res
-    .json(cards);
-});
-
-app.get('/list', (req, res) => {
-  res
-    .json(lists);
-});
-
-// gets specific ID
-app.get('/card/:id', (req, res) => {
-  const { id } = req.params;
-  const card = cards.find(card => card.id == id);
-
-// make sure to find the card
-  if (!card) {
-    logger.error(`Card with id ${id} not found.`);
-    return res
-      .status(404)
-      .send('Card Not Found');
-  }
-
-  res.json(card);
+    .send('Hello, world')
 })
 
-app.get('/list/:id', (req, res) => {
-  const { id } = req.params;
-  const list = lists.find(li => li.id == id);
-
-// make sure we find the list
-  if (!list) {
-    logger.error(`List with id ${id} not found.`);
-    return res
-      .status(404)
-      .send('List Not Found');
-  }
-
-  res.json(list);
+app.use(function errorHandler(error, req, res, next) {
+  let response
+    if (NODE_ENV === 'production') {
+      response = { error: { message: 'server error' } }
+    } else {
+      console.error(error)
+      response = { message: error.message, error }
+    }
+    res.status(500).json(response)
 })
-//---------------------------------------------------
-// POST http request
-//---------------------------------------------------
-app.post('/card', (req, res) => {
-  const { title, content } = req.body;
-
-  if (!title) {
-    logger.error(`Title is required`);
-    return res
-      .status(400)
-      .send('Invalid data');
-  }
-
-  if (!content) {
-    logger.error(`Content is required`);
-    return res
-      .status(400)
-      .send('Invalid data');
-  }
-
-// If they do exist generate ID & push a card object into array
-  const id = uuid();
-
-  const card = {
-    id,
-    title,
-    content
-  };
-
-  cards.push(card);
-
-  logger.info(`Card with id ${id} created`);
-  
-  res
-    .status(201)
-    .location(`http://localhost:8000/card/${id}`)
-    .json(card)
-})
-
-//---------------------------------------------------
-// ErrorHandler
-//---------------------------------------------------
-  app.use(function errorHandler(error, req, res, next) {
-      let response
-      if (NODE_ENV === 'production') {
-        response = { error: { message: 'server error' } }
-      } else {
-        console.error(error)
-        response = { message: error.message, error }
-      }
-      res.status(500).json(response)
-    })
 
 module.exports = app
